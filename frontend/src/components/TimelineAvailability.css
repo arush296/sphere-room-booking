@@ -1,0 +1,148 @@
+.timeline-container {
+  width: 100%;
+}
+
+.timeline-legend {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.legend-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.legend-box.available {
+  background-color: #4caf50;
+}
+
+.legend-box.booked {
+  background-color: #f44336;
+}
+
+.legend-box.past {
+  background-color: #9ca3af;
+}
+
+.legend-box.selected {
+  background-color: var(--primary-color);
+}
+
+.timeline {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+}
+
+.hour-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.hour-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  min-width: 84px;
+  text-align: center;
+}
+
+.time-slot {
+  width: 84px;
+  height: 34px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  font-weight: 500;
+}
+
+.time-slot.available {
+  background-color: #4caf50;
+  color: white;
+}
+
+.time-slot.available:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+}
+
+.time-slot.booked {
+  background-color: #f44336;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.time-slot.past {
+  background-color: #9ca3af;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.time-slot.selected {
+  background: linear-gradient(130deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
+
+.time-slot.hour-slot {
+  border-radius: 8px;
+  font-size: 0.78rem;
+}
+
+.timeline-hint {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .timeline {
+    gap: 0.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hour-label {
+    font-size: 0.7rem;
+    min-width: 74px;
+  }
+
+  .time-slot {
+    width: 74px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+
+  .timeline-legend {
+    gap: 1rem;
+  }
+}

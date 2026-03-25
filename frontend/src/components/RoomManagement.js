@@ -48,7 +48,7 @@ function RoomManagement({ rooms, onRoomUpdated, API_URL }) {
         .map(a => a.trim())
         .filter(a => a.length > 0);
 
-      const response = await axios.put(`${API_URL}/rooms/${roomId}`, {
+      await axios.put(`${API_URL}/rooms/${roomId}`, {
         name: formData.name,
         capacity: parseInt(formData.capacity),
         location: formData.location,
@@ -81,7 +81,7 @@ function RoomManagement({ rooms, onRoomUpdated, API_URL }) {
         .map(a => a.trim())
         .filter(a => a.length > 0);
 
-      const response = await axios.post(`${API_URL}/rooms`, {
+      await axios.post(`${API_URL}/rooms`, {
         name: formData.name,
         capacity: parseInt(formData.capacity),
         location: formData.location,

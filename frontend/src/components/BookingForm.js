@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import TimelineAvailability from './TimelineAvailability';
 import './BookingForm.css';
@@ -46,7 +46,7 @@ function BookingForm({ room, studentId, onBack, onBookingSuccess }) {
     ? `${String(Math.min(minStartHourForToday, 22)).padStart(2, '0')}:00`
     : '08:00';
 
-  const addOneHour = (timeStr) => {
+  const addOneHour = useCallback((timeStr) => {
     const [hours, minutes] = timeStr.split(':').map(Number);
     const totalMinutes = hours * 60 + minutes + 60;
     const cappedMinutes = Math.min(totalMinutes, 23 * 60);
@@ -54,25 +54,9 @@ function BookingForm({ room, studentId, onBack, onBookingSuccess }) {
     const nextMinutes = cappedMinutes % 60;
 
     return `${String(nextHours).padStart(2, '0')}:${String(nextMinutes).padStart(2, '0')}`;
-  };
+  }, []);
 
-  useEffect(() => {
-    fetchAvailability();
-  }, [date]);
-
-  useEffect(() => {
-    if (hasNoFutureSlotsToday) {
-      setError('No future slots are available for today. Please choose a later date.');
-      return;
-    }
-
-    if (isTodaySelected && toMinutes(startTime) < toMinutes(minStartTime)) {
-      setStartTime(minStartTime);
-      setEndTime(addOneHour(minStartTime));
-    }
-  }, [date]);
-
-  const fetchAvailability = async () => {
+  const fetchAvailability = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axios.get(
@@ -86,7 +70,23 @@ function BookingForm({ room, studentId, onBack, onBookingSuccess }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [API_URL, room.id, date]);
+
+  useEffect(() => {
+    fetchAvailability();
+  }, [fetchAvailability]);
+
+  useEffect(() => {
+    if (hasNoFutureSlotsToday) {
+      setError('No future slots are available for today. Please choose a later date.');
+      return;
+    }
+
+    if (isTodaySelected && toMinutes(startTime) < toMinutes(minStartTime)) {
+      setStartTime(minStartTime);
+      setEndTime(addOneHour(minStartTime));
+    }
+  }, [hasNoFutureSlotsToday, isTodaySelected, startTime, minStartTime, addOneHour]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './MyBookings.css';
 
@@ -11,11 +11,7 @@ function MyBookings({ studentId }) {
 
   const API_URL = process.env.REACT_APP_API_URL;
 
-  useEffect(() => {
-    fetchBookings();
-  }, [studentId]);
-
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axios.get(`${API_URL}/bookings/student/${studentId}`);
@@ -28,7 +24,11 @@ function MyBookings({ studentId }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [API_URL, studentId]);
+
+  useEffect(() => {
+    fetchBookings();
+  }, [fetchBookings]);
 
   const handleCancelBooking = async (bookingId) => {
     try {

@@ -165,6 +165,66 @@ router.get('/admin/pending', requireGoogleAuth, requireAdmin, async (req, res) =
   }
 });
 
+// Get all approved bookings
+router.get('/admin/approved', requireGoogleAuth, requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT
+        b.id,
+        b.room_id,
+        r.name as room_name,
+        r.location,
+        b.student_id,
+        b.purpose,
+        b.status,
+        b.created_at,
+        to_char(b.start_time, 'Dy, DD Mon, YYYY HH12:MI AM') as start_display,
+        to_char(b.end_time, 'HH12:MI AM') as end_display,
+        to_char(b.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata', 'DD Mon, YYYY HH12:MI AM') || ' IST' as request_time_display
+       FROM bookings b
+       JOIN rooms r ON b.room_id = r.id
+       WHERE b.status = 'approved'
+       ORDER BY b.created_at DESC`,
+      []
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching approved bookings:', err);
+    res.status(500).json({ error: 'Failed to fetch approved bookings' });
+  }
+});
+
+// Get all rejected bookings
+router.get('/admin/rejected', requireGoogleAuth, requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT
+        b.id,
+        b.room_id,
+        r.name as room_name,
+        r.location,
+        b.student_id,
+        b.purpose,
+        b.status,
+        b.created_at,
+        to_char(b.start_time, 'Dy, DD Mon, YYYY HH12:MI AM') as start_display,
+        to_char(b.end_time, 'HH12:MI AM') as end_display,
+        to_char(b.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata', 'DD Mon, YYYY HH12:MI AM') || ' IST' as request_time_display
+       FROM bookings b
+       JOIN rooms r ON b.room_id = r.id
+       WHERE b.status = 'rejected'
+       ORDER BY b.created_at DESC`,
+      []
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching rejected bookings:', err);
+    res.status(500).json({ error: 'Failed to fetch rejected bookings' });
+  }
+});
+
 // Approve a booking
 router.patch('/admin/:id/approve', requireGoogleAuth, requireAdmin, async (req, res) => {
   try {

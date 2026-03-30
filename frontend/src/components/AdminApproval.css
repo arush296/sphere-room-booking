@@ -40,6 +40,36 @@
   box-shadow: 0 8px 18px rgba(15, 118, 110, 0.28);
 }
 
+.booking-status-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.status-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -0.55rem;
+}
+
+.status-tab:hover {
+  color: var(--primary-color);
+}
+
+.status-tab.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
 .admin-header {
   display: flex;
   justify-content: space-between;
